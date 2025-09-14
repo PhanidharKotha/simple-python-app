@@ -87,7 +87,7 @@ python quote_app.py --daily
    python web_app.py
    ```
 
-2. Open your browser and go to: http://localhost:5000
+2. Open your browser and go to: http://localhost:5001
 
 3. The web app provides:
    - **Home page**: Random quote with refresh button
@@ -153,6 +153,59 @@ You can easily customize the app by:
 3. **Adding new features**: Extend the `QuoteApp` class with additional methods
 4. **Styling**: Modify the CSS in the HTML templates for the web app
 
+## Docker Deployment
+
+### Quick Start with Docker
+
+1. **Build and run with Docker:**
+   ```bash
+   # Build the image
+   docker build -t quote-display-app .
+   
+   # Run the container on port 5001
+   docker run -p 5001:5001 quote-display-app
+   ```
+
+2. **Access the application:**
+   - Web app: http://localhost:5001
+
+### Docker Commands
+
+```bash
+# Build the image
+docker build -t quote-display-app .
+
+# Run the container on port 5001
+docker run -p 5001:5001 quote-display-app
+
+# Run in background
+docker run -d -p 5001:5001 --name quote-app quote-display-app
+
+# View logs
+docker logs quote-app
+
+# Stop the container
+docker stop quote-app
+
+# Remove the container
+docker rm quote-app
+
+# Remove the image
+docker rmi quote-display-app
+```
+
+### Production Deployment
+
+For production deployment, use the production Dockerfile:
+
+```bash
+# Build production image
+docker build -f Dockerfile.prod -t quote-display-app:prod .
+
+# Run production container
+docker run -d -p 5001:5001 --name quote-app-prod quote-display-app:prod
+```
+
 ## File Structure
 
 ```
@@ -161,9 +214,14 @@ Docker/simple-python-app/
 ├── web_app.py            # Web application (Flask)
 ├── requirements.txt      # Dependencies
 ├── README.md            # This file
+├── Dockerfile           # Development Docker image
+├── Dockerfile.prod      # Production Docker image
+├── .dockerignore        # Docker ignore file
+├── .gitignore          # Git ignore file
 └── templates/           # HTML templates for web app
     ├── index.html       # Main page
     ├── all_quotes.html  # All quotes page
+    ├── daily_quote.html # Quote of the day page
     └── add_quote.html   # Add quote page
 ```
 
