@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote Display App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+
+        .quote-container {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        .quote {
+            font-size: 1.4em;
+            line-height: 1.6;
+            color: #333;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .timestamp {
+            color: #666;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #6c757d, #495057);
+            box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .loading {
+            display: none;
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .quote {
+                font-size: 1.2em;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌟 Quote Display App</h1>
+        
+        <div class="quote-container">
+            <div class="quote" id="quote">{{ quote }}</div>
+            <div class="timestamp" id="timestamp">📅 {{ timestamp }}</div>
+        </div>
+
+        <div class="loading" id="loading">Loading new quote...</div>
+
+        <div class="buttons">
+            <button class="btn" onclick="getRandomQuote()">🎲 Random Quote</button>
+            <a href="/daily" class="btn btn-secondary">📅 Quote of the Day</a>
+            <a href="/all" class="btn btn-secondary">📚 All Quotes</a>
+            <a href="/add" class="btn btn-success">➕ Add Quote</a>
+        </div>
+    </div>
+
+    <script>
+        function getRandomQuote() {
+            const loading = document.getElementById('loading');
+            const quote = document.getElementById('quote');
+            const timestamp = document.getElementById('timestamp');
+            
+            loading.style.display = 'block';
+            quote.style.opacity = '0.5';
+            
+            fetch('/random')
+                .then(response => response.json())
+                .then(data => {
+                    quote.textContent = data.quote;
+                    timestamp.textContent = '📅 ' + data.timestamp;
+                    loading.style.display = 'none';
+                    quote.style.opacity = '1';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    loading.style.display = 'none';
+                    quote.style.opacity = '1';
+                });
+        }
+
+        // Auto-refresh quote every 30 seconds
+        setInterval(getRandomQuote, 30000);
+    </script>
+</body>
+</html>

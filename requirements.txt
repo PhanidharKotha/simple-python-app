@@ -1,0 +1,41 @@
+# Quote Display App Requirements
+
+## Command Line App
+The command line version (`quote_app.py`) uses only the standard library, so no external dependencies are required.
+
+## Web App
+The web version (`web_app.py`) requires Flask for the web interface.
+
+## Installation
+
+### For Command Line App
+No additional packages needed beyond Python 3.6+
+
+### For Web App
+Install Flask:
+```bash
+pip install Flask
+```
+
+Or install from requirements:
+```bash
+pip install -r requirements.txt
+```
+
+## Dependencies
+
+- **Flask** (for web app only)
+- **Python 3.6+**
+
+## Running the Apps
+
+### Command Line App
+```bash
+python quote_app.py
+```
+
+### Web App
+```bash
+python web_app.py
+```
+Then open your browser to: http://localhost:5000
